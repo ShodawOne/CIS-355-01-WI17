@@ -73,7 +73,7 @@
 					  <div class="control-group <?php echo !empty($dateError)?'error':'';?>">
 					    <label class="control-label">Date</label>
 					    <div class="controls">
-					      	<input name="date" type="text"  placeholder="Date" value="<?php echo !empty($date)?$date:'';?>">
+					      	<input name="event_date" type="text"  placeholder="Date" value="<?php echo !empty($date)?$date:'';?>">
 					      	<?php if (!empty($dateError)): ?>
 					      		<span class="help-inline"><?php echo $dateError;?></span>
 					      	<?php endif; ?>
@@ -82,7 +82,7 @@
 					 <div class="control-group <?php echo !empty($timeError)?'error':'';?>">
 					    <label class="control-label">Time</label>
 					    <div class="controls">
-					      	<input name="time" type="text"  placeholder="Time" value="<?php echo !empty($time)?$time:'';?>">
+					      	<input name="event_time" type="text"  placeholder="Time" value="<?php echo !empty($time)?$time:'';?>">
 					      	<?php if (!empty($timeError)): ?>
 					      		<span class="help-inline"><?php echo $timeError;?></span>
 					      	<?php endif; ?>
@@ -91,7 +91,7 @@
 					  <div class="control-group <?php echo !empty($locationError)?'error':'';?>">
 					    <label class="control-label">Location</label>
 					    <div class="controls">
-					      	<input name="location" type="text"  placeholder="Location" value="<?php echo !empty($location)?$location:'';?>">
+					      	<input name="event_location" type="text"  placeholder="Location" value="<?php echo !empty($location)?$location:'';?>">
 					      	<?php if (!empty($locationError)): ?>
 					      		<span class="help-inline"><?php echo $locationError;?></span>
 					      	<?php endif; ?>
@@ -100,8 +100,8 @@
 					  <div class="control-group <?php echo !empty($descriptionError)?'error':'';?>">
 					    <label class="control-label">Description</label>
 					    <div class="controls">
-					      	<input name="description" type="text"  placeholder="Description" value="<?php echo !empty($description)?$description:'';?>">
-					      	<?php if (!empty($locationError)): ?>
+					      	<input name="event_description" type="text"  placeholder="Description" value="<?php echo !empty($description)?$description:'';?>">
+					      	<?php if (!empty($descripptionError)): ?>
 					      		<span class="help-inline"><?php echo $descriptionError;?></span>
 					      	<?php endif; ?>
 					    </div>
