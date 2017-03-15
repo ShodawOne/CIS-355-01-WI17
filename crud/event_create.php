@@ -42,10 +42,15 @@
 		// insert data
 		if ($valid) {
 			$pdo = Database::connect();
+			
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			
 			$sql = "INSERT INTO events (event_date,event_time,event_location,event_description) values(?, ?, ?, ?)";
+			
 			$q = $pdo->prepare($sql);
+			
 			$q->execute(array($date,$time,$location,$description));
+			
 			Database::disconnect();
 			header("Location: events.php");
 		}
@@ -73,7 +78,7 @@
 					  <div class="control-group <?php echo !empty($dateError)?'error':'';?>">
 					    <label class="control-label">Date</label>
 					    <div class="controls">
-					      	<input name="event_date" type="text"  placeholder="Date" value="<?php echo !empty($date)?$date:'';?>">
+					      	<input name="event_date" type="date"  placeholder="Date" value="<?php echo !empty($date)?$date:'';?>">
 					      	<?php if (!empty($dateError)): ?>
 					      		<span class="help-inline"><?php echo $dateError;?></span>
 					      	<?php endif; ?>
