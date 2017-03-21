@@ -1,4 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
 
+    <meta charset="utf-8">
+    <link   href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap.min.js"></script>
+  
+</head>
+<body>
+<div>
+    <p>
+	<a href="http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/home.php" class="btn btn-success">Home</a>
+	</p>
+</div>
+</body>
+</html>
+	
 <?php
 
 $host="localhost"; // Host name 

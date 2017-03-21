@@ -16,7 +16,7 @@ if(isset($_POST['register_btn']))
    $password2 = $_POST['password2'];
      if($password==$password2)
      {           //Create User
-            $password=md5($password); //hash password before storing for security purposes
+            $password($password); //hash password before storing for security purposes
             $sql="INSERT INTO users(username,email,password) VALUES('$username','$email','$password')";
             mysqli_query($db,$sql);  
             $_SESSION['message']="You are now logged in"; 

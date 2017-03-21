@@ -13,11 +13,11 @@
 		// delete data
 		$pdo = Database::connect();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$sql = "DELETE FROM customers  WHERE id = ?";
+		$sql = "DELETE FROM users  WHERE id = ?";
 		$q = $pdo->prepare($sql);
 		$q->execute(array($id));
 		Database::disconnect();
-		header("Location: index.php");
+		header("Location: user.php");
 		
 	} 
 ?>
@@ -28,6 +28,9 @@
     <meta charset="utf-8">
     <link   href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap.min.js"></script>
+	<style>
+		body {background-color: #ff0000;}
+	</style>
 </head>
 
 <body>
@@ -35,7 +38,7 @@
     
     			<div class="span10 offset1">
     				<div class="row">
-		    			<h3>Delete a Customer</h3>
+		    			<h3>Delete a User</h3>
 		    		</div>
 		    		
 	    			<form class="form-horizontal" action="delete.php" method="post">
@@ -43,7 +46,7 @@
 					  <p class="alert alert-error">Are you sure to delete ?</p>
 					  <div class="form-actions">
 						  <button type="submit" class="btn btn-danger">Yes</button>
-						  <a class="btn" href="index.php">No</a>
+						  <a class="btn" href="user.php">No</a>
 						</div>
 					</form>
 				</div>

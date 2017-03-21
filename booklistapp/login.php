@@ -36,6 +36,9 @@ if(isset($_POST['login_btn']))
 </head>
 <body>
 <div class="header">
+
+ 
+
     <h1>Register, login and logout user php mysql</h1>
 </div>
 <?php
