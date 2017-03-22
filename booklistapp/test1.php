@@ -10,14 +10,14 @@ if(isset($_POST['register_btn']))
 	$username = $_POST['username'];
     //$email=mysql_real_escape_string($_POST['email']);
 	$email = $_POST['email'];
-   // $password=mysql_real_escape_string($_POST['password']);
-   $password = $_POST['password'];
-   // $password2=mysql_real_escape_string($_POST['password2']);  
-   $password2 = $_POST['password2'];
+    //$password=mysql_real_escape_string($_POST['password']);
+	$password = $_POST['password'];
+    //$password2=mysql_real_escape_string($_POST['password2']);  
+	$password2 = $_POST['password2'];
      if($password==$password2)
      {           //Create User
-            $password=md5($password); //hash password before storing for security purposes
-            $sql="INSERT INTO users(username,email,password) VALUES('$username','$email','$password')";
+            //$password=md5($password); //hash password before storing for security purposes
+            $sql="INSERT INTO users (username,email,password) VALUES('$username','$email','$password')";
             mysqli_query($db,$sql);  
             $_SESSION['message']="You are now logged in"; 
             $_SESSION['username']=$username;
@@ -33,9 +33,7 @@ if(isset($_POST['register_btn']))
 <html>
 <head>
   <title>Register , login and logout user php mysql</title>
-  <meta charset="utf-8">
-    <link   href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
 <div class="header">
@@ -68,7 +66,7 @@ if(isset($_POST['register_btn']))
      </tr>
       <tr>
            <td></td>
-           <td><input type="submit" name="register_btn" class="btn btn-success"></td>
+           <td><input type="submit" name="register_btn" class="Register"></td>
      </tr>
   
 </table>

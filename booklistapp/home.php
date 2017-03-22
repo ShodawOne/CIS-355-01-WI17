@@ -5,6 +5,7 @@ session_start();
 $db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
  
  
+  
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,7 +18,7 @@ $db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
     <script src="js/bootstrap.min.js"></script>
 	
 	<style>
-		body {background-color: #ff3333;}
+		body {background-color: #cc0000;}
 	</style>
 
   <title>Register , login and logout user php mysql</title>
