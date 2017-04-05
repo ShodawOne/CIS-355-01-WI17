@@ -1,3 +1,18 @@
+<?php
+session_start();
+ 
+//connect to database
+$db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
+
+session_start();
+if(!isset($_SESSION["username"])){ // if "user" not set,
+	session_destroy();
+	header('Location: login.php');     // go to login page
+	exit;
+} 
+?>
+
+
 <?php 
 	
 	require 'database.php';
@@ -43,15 +58,22 @@
 		if ($valid) {
 			$pdo = Database::connect();
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			//$sql = 'select bookname,bookauthor,bookrating from 
+					  // (UPDATE * FROM `users` as u join bookusers as bu on u.id=bu.userid WHERE u.id='.$id.') 
+					 //  as j join book on j.bookid=book.id';			
 			$sql = "UPDATE book  set bookname = ?, bookauthor = ?, bookrating = ? WHERE id = ?";
 			$q = $pdo->prepare($sql);
 			$q->execute(array($bookname,$bookauthor,$bookrating,$id));
 			Database::disconnect();
 			header("Location: booklist.php");
-		}
+		}	
 	} else {
 		$pdo = Database::connect();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		print_r($_SESSION);
+		//$sql = 'select bookname,bookauthor,bookrating from 
+			//		   (SELECT * FROM `users` as u join bookusers as bu on u.id=bu.userid WHERE u.id='.$id.') 
+				//	   as j join book on j.bookid=book.id';
 		$sql = "SELECT * FROM book where id = ?";
 		$q = $pdo->prepare($sql);
 		$q->execute(array($id));
@@ -61,6 +83,9 @@
 		$bookrating = $data['bookrating'];
 		Database::disconnect();
 	}
+	
+
+	
 ?>
 
 

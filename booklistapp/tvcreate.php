@@ -1,3 +1,19 @@
+<?php
+session_start();
+ 
+//connect to database
+$db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
+
+session_start();
+if(!isset($_SESSION["username"])){ // if "user" not set,
+	session_destroy();
+	header('Location: login.php');     // go to login page
+	exit;
+} 
+?>
+
+
+
 <?php 
 	
 	require 'database.php';
