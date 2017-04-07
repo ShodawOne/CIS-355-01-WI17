@@ -73,7 +73,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 			$sql = "UPDATE users  set username = ?, email = ?, password = ?, mobile = ? WHERE id = ?";
 			$q = $pdo->prepare($sql);
 			$password=MD5($password);
-			$q->execute(arra1y($username,$email,$password,$mobile,$id));
+			$q->execute(array($username,$email,$password,$mobile,$id));
 			Database::disconnect();
 			header("Location: user.php");
 		}
@@ -136,9 +136,9 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					    </div>
 					  </div>
 					  <div class="control-group <?php echo !empty($passwordError)?'error':'';?>">
-					    <label class="control-label">password</label>
+					    <label class="control-label">Password</label>
 					    <div class="controls">
-					      	<input name="password" type="text" placeholder="password" value="<?php echo !empty($password)?$password:'';?>">
+					      	<input name="password" type="text" placeholder="password" value="" value="<?php echo !empty($password)?$password:'';?>">
 					      	<?php if (!empty($passwordError)): ?>
 					      		<span class="help-inline"><?php echo $passwordError;?></span>
 					      	<?php endif;?>

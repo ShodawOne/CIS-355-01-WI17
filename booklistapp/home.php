@@ -44,6 +44,8 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
          unset($_SESSION['message']);
     }
 ?>
+
+
 <h1>Home</h1>
 <div>
     <h4>Welcome <?php echo $_SESSION['username']; ?></h4></div>

@@ -17,6 +17,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 <?php 
 	
 	require 'database.php';
+		$id=$_SESSION['id'];
 
 	if ( !empty($_POST)) {
 		// keep track validation errors
@@ -53,6 +54,30 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 			$sql = "INSERT INTO tvshow (tvname,tvnetwork,tvrating) values(?, ?, ?)";
 			$q = $pdo->prepare($sql);
 			$q->execute(array($tvname,$tvnetwork,$tvrating));
+			
+			$sql = "SELECT `AUTO_INCREMENT`
+					FROM INFORMATION_SCHEMA.TABLES
+					WHERE TABLE_SCHEMA = 'mrdurfee'
+					AND  TABLE_NAME   = 'tvshow'";
+			$q = $pdo->prepare($sql);
+			$q->execute(array($tvshow));
+		$q = $pdo->prepare($sql);
+		$q->execute();
+		$data = $q->fetch(PDO::FETCH_ASSOC);
+		$tvshowid = (int)$data['AUTO_INCREMENT']-1;
+		//var_dump ($data);
+		//echo $data['AUTO_INCREMENT'];
+		//exit();		
+			
+			//$tvshowid = 63;
+			$sql = "INSERT INTO tvshowusers (userid,tvshowid) values( ?, ?)";
+			$q = $pdo->prepare($sql);
+			$q->execute(array($id,$tvshowid));
+			
+			
+			
+			
+			
 			Database::disconnect();
 			header("Location: tvlist.php");
 		}

@@ -27,6 +27,7 @@ if(isset($_POST['register_btn']))
     {
       $_SESSION['message']="The two password do not match";   
      }
+	
 }
 ?>
 <!DOCTYPE html>

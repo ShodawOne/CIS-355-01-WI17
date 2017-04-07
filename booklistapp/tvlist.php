@@ -48,11 +48,15 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 		              </thead>
 		              <tbody>
 		              <?php 
-					  
+					 
+					   $id = $_SESSION['id'];
 
 					   include 'database.php';
 					   $pdo = Database::connect();
-					   $sql = 'SELECT * FROM tvshow ORDER BY id DESC';
+					   $sql = 
+					   'select tvname,tvnetwork,tvrating,tvshow.id as id from 
+					   (SELECT * FROM `users` as u join tvshowusers as bu on u.id=bu.userid WHERE u.id='.$id.') 
+					   as j join tvshow on j.tvshowid=tvshow.id';
 					   
 						
 	 				   foreach ($pdo->query($sql) as $row) {
