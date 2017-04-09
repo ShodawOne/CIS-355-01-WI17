@@ -1,4 +1,16 @@
+<?php
+session_start();
+ 
+//connect to database
+$db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
 
+session_start();
+if(!isset($_SESSION["username"])){ // if "user" not set,
+	session_destroy();
+	header('Location: login.php');     // go to login page
+	exit;
+} 
+?>
 
 <?php
 
@@ -126,8 +138,8 @@ mysql_close();
 <td><textarea name="a_answer" cols="45" rows="3" id="a_answer"></textarea></td>
 </tr>
 <tr>
-<td colspan="5" align="middle" bgcolor="#E6E6E6"><a  href="view_topic.php" ><strong>Return to the Top</strong> </a></td>
-</tr>
+<!--<td colspan="5" align="middle" bgcolor="#E6E6E6"><a  href="view_topic.php" ><strong>Return to the Top</strong> </a></td>
+</tr>-->
 <tr>
 <td colspan="5" align="middle" bgcolor="#E6E6E6"><a href="main_forum.php" ><strong>Return to Main Page</strong> </a></td>
 </tr>

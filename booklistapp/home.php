@@ -51,7 +51,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
     <h4>Welcome <?php echo $_SESSION['username']; ?></h4></div>
 	<p>
 	<a href="user.php" class="btn btn-success">Your Profile</a>
-	<a href="http://csis.svsu.edu/~mrdurfee/cis355/forum3/main_forum.php" class="btn btn-success">Forum</a>
+	<a href="forum3/main_forum.php" class="btn btn-success">Forum</a>
 	</p>
 
 </div>
