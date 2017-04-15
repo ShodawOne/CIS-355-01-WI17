@@ -17,25 +17,30 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 	
 	require 'database.php';
 
-	$id = null;
-	if ( !empty($_GET['id'])) {
-		$id = $_REQUEST['id'];
-	}
-	
-	if ( null==$id ) {
-		header("Location: booklist.php");
-	}
+	$id = $_GET['id'];
 	
 	if ( !empty($_POST)) {
 		// keep track validation errors
 		$booknameError = null;
 		$bookauthorError = null;
 		$bookratingError = null;
+		$pictureError = null; // not used
 		
 		// keep track post values
 		$bookname = $_POST['bookname'];
 		$bookauthor = $_POST['bookauthor'];
 		$bookrating = $_POST['bookrating'];
+		$picture = $_POST['picture']; // not used
+		
+		
+	// initialize $_FILES variables
+	$fileName = $_FILES['userfile']['name'];
+	$tmpName  = $_FILES['userfile']['tmp_name'];
+	$fileSize = $_FILES['userfile']['size'];
+	$fileType = $_FILES['userfile']['type'];
+	$content = file_get_contents($tmpName);
+
+
 		
 		// validate input
 		$valid = true;
@@ -56,17 +61,30 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 		
 		// update data
 		if ($valid) {
+			if($fileSize > 0){
 			$pdo = Database::connect();
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			//$sql = 'select bookname,bookauthor,bookrating from 
 					  // (UPDATE * FROM `users` as u join bookusers as bu on u.id=bu.userid WHERE u.id='.$id.') 
 					 //  as j join book on j.bookid=book.id';			
-			$sql = "UPDATE book  set bookname = ?, bookauthor = ?, bookrating = ? WHERE id = ?";
+			$sql = "UPDATE book  set bookname = ?, bookauthor = ?, bookrating = ?, filename = ?, filesize = ?, filetype = ?, filecontent = ? WHERE id = ?";
 			$q = $pdo->prepare($sql);
-			$q->execute(array($bookname,$bookauthor,$bookrating,$id));
+			$q->execute(array($bookname,$bookauthor,$bookrating,$fileName,$fileSize,$fileType,$content, $id));
 			Database::disconnect();
 			header("Location: booklist.php");
-		}	
+		}
+		else { // otherwise, update all fields EXCEPT file fields
+			$pdo = Database::connect();
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$sql = "UPDATE book  set bookname = ?, bookauthor = ?, bookrating = ? WHERE id = ?";
+			$q = $pdo->prepare($sql);
+			$q->execute(array($bookname, $bookauthor, $bookrating,$id));
+			Database::disconnect();
+			header("Location: booklist.php");
+		}
+		
+	}
+		
 	} else {
 		$pdo = Database::connect();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -136,11 +154,38 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					      	<?php endif;?>
 					    </div>
 					  </div>
+					  
+					<div class="control-group <?php echo !empty($pictureError)?'error':'';?>">
+					<label class="control-label">Picture</label>
+					<div class="controls">
+						<input type="hidden" name="MAX_FILE_SIZE" value="16000000">
+						<input name="userfile" type="file" id="userfile">
+					</div>
+				</div>
+					  
 					  <div class="form-actions">
 						  <button type="submit" class="btn btn-success">Update</button>
 						  <a class="btn" href="booklist.php">Back</a>
 						</div>
 					</form>
+					
+				<!-- Display photo, if any --> 
+
+				<div class='control-group col-md-6'>
+					<div class="controls ">
+					<?php 
+					if ($data['filesize'] > 0) 
+						echo '<img  height=5%; width=15%; src="data:image/jpeg;base64,' . 
+							base64_encode( $data['filecontent'] ) . '" />'; 
+					else 
+						echo 'No photo on file.';
+					?><!-- converts to base 64 due to the need to read the binary files code and display img -->
+					</div>
+				</div>
+				
+		
+
+					
 				</div>
 				
     </div> <!-- /container -->

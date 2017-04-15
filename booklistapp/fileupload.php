@@ -1,3 +1,17 @@
+<?php
+session_start();
+ 
+//connect to database
+$db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
+
+session_start();
+if(!isset($_SESSION["username"])){ // if "user" not set,
+	session_destroy();
+	header('Location: login.php');     // go to login page
+	exit;
+} 
+?>
+
  <?php
 
 //print_r($_FILES);
@@ -38,7 +52,7 @@ if($_FILES['file1']['size']>0 && $_FILES['file1']['size']<2000000){
     
     // if connection was successful, insert the contents into the content (blob) field
     if($db) {
-        $query = "INSERT INTO mr_upload1 (name, size, type, content) VALUES ('$filename', '$filesize', '$filetype', '$content')";
+        $query = "INSERT INTO book (name, size, type, content) VALUES ('$filename', '$filesize', '$filetype', '$filecontent')";
         mysql_query($query) or die('query failed');
         mysql_close();
         echo "upload successful";
