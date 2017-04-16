@@ -59,6 +59,22 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 			$valid = false;
 		}
 		
+		// restrict file types for upload
+	$types = array('image/jpeg','image/gif','image/png');
+	if($filesize > 0) {
+		if(in_array($_FILES['userfile']['type'], $types)) {
+		}
+		else {
+			$filename = null;
+			$filetype = null;
+			$filesize = null;
+			$filecontent = null;
+			$pictureError = 'improper file type';
+			$valid=false;
+			
+		}
+	}
+		
 		// update data
 		if ($valid) {
 			if($fileSize > 0){
@@ -69,7 +85,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					 //  as j join book on j.bookid=book.id';			
 			$sql = "UPDATE book  set bookname = ?, bookauthor = ?, bookrating = ?, filename = ?, filesize = ?, filetype = ?, filecontent = ? WHERE id = ?";
 			$q = $pdo->prepare($sql);
-			$q->execute(array($bookname,$bookauthor,$bookrating,$fileName,$fileSize,$fileType,$content, $id));
+			$q->execute(array($bookname,$bookauthor,$bookrating,$fileName,$fileSize,$fileType,$content,$id));
 			Database::disconnect();
 			header("Location: booklist.php");
 		}
@@ -126,7 +142,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 		    			<h3>Update a BookList</h3>
 		    		</div>
     		
-	    			<form class="form-horizontal" action="bookupdate.php?id=<?php echo $id?>" method="post">
+	    			<form class="form-horizontal" action="bookupdate.php?id=<?php echo $id?>" method="post" enctype="multipart/form-data">
 					  <div class="control-group <?php echo !empty($booknameError)?'error':'';?>">
 					    <label class="control-label">BookName</label>
 					    <div class="controls">
@@ -160,6 +176,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					<div class="controls">
 						<input type="hidden" name="MAX_FILE_SIZE" value="16000000">
 						<input name="userfile" type="file" id="userfile">
+						
 					</div>
 				</div>
 					  

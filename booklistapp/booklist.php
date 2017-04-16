@@ -34,7 +34,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 			<div class="row">
 			
 				<p>
-					<a href="testuplod.php" class="btn btn-success">Create</a>
+					<a href="bookcreate.php" class="btn btn-success">Create</a>
 					<a href="home.php" class="btn btn-success">Home</a>
 				</p>
 																

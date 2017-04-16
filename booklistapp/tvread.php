@@ -78,6 +78,21 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 						    </label>
 					    </div>
 					  </div>
+					  
+					   <!-- Display photo, if any --> 
+
+				<div class='control-group col-md-6'>
+					<div class="controls ">
+					<?php 
+					if ($data['filesize'] > 0) 
+						echo '<img  height=5%; width=15%; src="data:image/jpeg;base64,' . 
+							base64_encode( $data['filecontent'] ) . '" />'; 
+					else 
+						echo 'No photo on file.';
+					?><!-- converts to base 64 due to the need to read the binary files code and display img -->
+					</div>
+				</div>
+					  
 					    <div class="form-actions">
 						  <a class="btn" href="tvlist.php">Back</a>
 					   </div>

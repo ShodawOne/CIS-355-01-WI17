@@ -1,5 +1,5 @@
 <?php
-/* session_start();
+session_start();
  
 //connect to database
 $db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
@@ -7,29 +7,23 @@ $db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
 session_start();
 if(!isset($_SESSION["username"])){ // if "user" not set,
 	session_destroy();
-	header('Location: login.php');     // go to login page
+	header('Location: http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/bootstarp/loginform2/login.php');     // go to login page
 	exit;
-} */
+} 
 ?>
 
 <?php 
 	require 'database.php';
-	$id = null;
-	if ( !empty($_GET['id'])) {
-		$id = $_REQUEST['id'];
-	}
-	
+	$id=$_SESSION['id'];
 	
 	if ( null==$id ) {
 		header("Location: user.php");
 	} else {
 		$pdo = Database::connect();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		print_r($_SESSION);
-	    $sql = "SELECT * FROM users where id = ?";
-		//$sql = 'select email,mobile,username from 
-			//		   (SELECT * FROM `users` as u join bookusers as bu on u.id=bu.userid WHERE u.id='.$id.') 
-				//	   as j join book on j.bookid=book.id';
+		$sql = 'select email,mobile,username,bookname,bookauthor,bookrating from 
+					   (SELECT * FROM `users` as u join bookusers as bu on u.id=bu.userid WHERE u.id='.$id.') 
+					   as j join book on j.bookid=book.id';
 		$q = $pdo->prepare($sql);
 		$q->execute(array($id));
 		$data = $q->fetch(PDO::FETCH_ASSOC);
@@ -63,7 +57,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 						<div class="inner">
 
 							<!-- Logo -->
-								<a href="index.html" class="logo">
+								<a href="index.php" class="logo">
 									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">Home</span>
 								</a>
 
@@ -81,10 +75,11 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					<nav id="menu">
 						<h2>Menu</h2>
 						<ul>
-							<li><a href="index.html">Home</a></li>
+							<li><a href="index.php">Home</a></li>
 							<li><a href="user.php">User Info</a></li>
 							<li><a href="booklist.php">Book List</a></li>
 							<li><a href="tvlist.php">TV List</a></li>
+							<li><a href="http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/bootstarp/forum3/main_forum1.php">Forum</a></li>
 						</ul>
 					</nav>
 					

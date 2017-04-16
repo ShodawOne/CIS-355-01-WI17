@@ -1,5 +1,5 @@
 <?php
-/* session_start();
+ session_start();
  
 //connect to database
 $db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
@@ -7,34 +7,36 @@ $db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
 session_start();
 if(!isset($_SESSION["username"])){ // if "user" not set,
 	session_destroy();
-	header('Location: login.php');     // go to login page
+	header('Location: http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/bootstarp/loginform2/login.php');     // go to login page
 	exit;
-} */
+} 
 ?>
 
 <?php 
 	
 	require 'database.php';
 
-	$id = null;
-	if ( !empty($_GET['id'])) {
-		$id = $_REQUEST['id'];
-	}
-	
-	if ( null==$id ) {
-		header("Location: booklist.php");
-	}
+	$id = $_GET['id'];
 	
 	if ( !empty($_POST)) {
 		// keep track validation errors
 		$booknameError = null;
 		$bookauthorError = null;
 		$bookratingError = null;
+		$pictureError = null; // not used
 		
 		// keep track post values
 		$bookname = $_POST['bookname'];
 		$bookauthor = $_POST['bookauthor'];
 		$bookrating = $_POST['bookrating'];
+		$picture = $_POST['picture']; // not used
+		
+		// initialize $_FILES variables
+	$fileName = $_FILES['userfile']['name'];
+	$tmpName  = $_FILES['userfile']['tmp_name'];
+	$fileSize = $_FILES['userfile']['size'];
+	$fileType = $_FILES['userfile']['type'];
+	$content = file_get_contents($tmpName);
 		
 		// validate input
 		$valid = true;
@@ -53,23 +55,52 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 			$valid = false;
 		}
 		
+		// restrict file types for upload
+	$types = array('image/jpeg','image/gif','image/png');
+	if($filesize > 0) {
+		if(in_array($_FILES['userfile']['type'], $types)) {
+		}
+		else {
+			$filename = null;
+			$filetype = null;
+			$filesize = null;
+			$filecontent = null;
+			$pictureError = 'improper file type';
+			$valid=false;
+			
+		}
+	}
+		
 		// update data
 		if ($valid) {
+			if($fileSize > 0){
 			$pdo = Database::connect();
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			//$sql = 'select bookname,bookauthor,bookrating from 
 					  // (UPDATE * FROM `users` as u join bookusers as bu on u.id=bu.userid WHERE u.id='.$id.') 
 					 //  as j join book on j.bookid=book.id';			
-			$sql = "UPDATE book  set bookname = ?, bookauthor = ?, bookrating = ? WHERE id = ?";
+			$sql = "UPDATE book  set bookname = ?, bookauthor = ?, bookrating = ?, filename = ?, filesize = ?, filetype = ?, filecontent = ? WHERE id = ?";
 			$q = $pdo->prepare($sql);
-			$q->execute(array($bookname,$bookauthor,$bookrating,$id));
+			$q->execute(array($bookname,$bookauthor,$bookrating,$fileName,$fileSize,$fileType,$content,$id));
 			Database::disconnect();
 			header("Location: booklist.php");
-		}	
+		}
+		else { // otherwise, update all fields EXCEPT file fields
+			$pdo = Database::connect();
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$sql = "UPDATE book  set bookname = ?, bookauthor = ?, bookrating = ? WHERE id = ?";
+			$q = $pdo->prepare($sql);
+			$q->execute(array($bookname, $bookauthor, $bookrating,$id));
+			Database::disconnect();
+			header("Location: booklist.php");
+		}
+		
+	}
+		
 	} else {
 		$pdo = Database::connect();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		print_r($_SESSION);
+		//print_r($_SESSION);
 		//$sql = 'select bookname,bookauthor,bookrating from 
 			//		   (SELECT * FROM `users` as u join bookusers as bu on u.id=bu.userid WHERE u.id='.$id.') 
 				//	   as j join book on j.bookid=book.id';
@@ -82,7 +113,6 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 		$bookrating = $data['bookrating'];
 		Database::disconnect();
 	}
-	
 
 	
 ?>
@@ -113,7 +143,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 						<div class="inner">
 
 							<!-- Logo -->
-								<a href="index.html" class="logo">
+								<a href="index.php" class="logo">
 									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">Home</span>
 								</a>
 								
@@ -131,10 +161,11 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					<nav id="menu">
 						<h2>Menu</h2>
 						<ul>
-							<li><a href="index.html">Home</a></li>
+							<li><a href="index.php">Home</a></li>
 							<li><a href="user.php">User Info</a></li>
 							<li><a href="booklist.php">Book List</a></li>
 							<li><a href="tvlist.php">TV List</a></li>
+							<li><a href="http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/bootstarp/forum3/main_forum1.php">Forum</a></li>
 						</ul>
 					</nav>
 					
@@ -148,7 +179,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					<table >
 		              <thead>
 		                <tr>
-						<form class="form-horizontal" action="bookupdate.php?id=<?php echo $id?>" method="post">
+						<form class="form-horizontal" action="bookupdate.php?id=<?php echo $id?>" method="post" enctype="multipart/form-data">
 		                  <th>
 						  <div class="control-group <?php echo !empty($booknameError)?'error':'';?>">
 					    <label class="control-label">BookName</label>
@@ -182,6 +213,16 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					    </div>
 					  </div>
 					  </th>
+					  <th>
+					  <div class="control-group <?php echo !empty($pictureError)?'error':'';?>">
+					<label class="control-label">Picture</label>
+					<div class="controls">
+						<input type="hidden" name="MAX_FILE_SIZE" value="16000000">
+						<input name="userfile" type="file" id="userfile">
+						
+					</div>
+				</div>
+					  </th>
 		                  <th>
 						  <div class="form-actions">
 						  <button type="submit" class="btn btn-success">Update</button>
@@ -194,6 +235,21 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 						</div>
 						</th>
 		                </tr>
+						
+						<!-- Display photo, if any --> 
+
+				<div class='control-group col-md-6'>
+					<div class="controls ">
+					<?php 
+					if ($data['filesize'] > 0) 
+						echo '<img  height=20%; width=15%; src="data:image/jpeg;base64,' . 
+							base64_encode( $data['filecontent'] ) . '" />'; 
+					else 
+						echo 'No photo on file.';
+					?><!-- converts to base 64 due to the need to read the binary files code and display img -->
+					</div>
+				</div>
+						
 		              </thead>
 		              <tbody>
 		              <?php 

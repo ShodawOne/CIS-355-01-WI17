@@ -1,0 +1,15 @@
+
+
+git clone https://github.com/cis255/cis255.git (Links to an external site.)
+
+git add --all
+
+git commit -m "initial commit"
+
+git pull
+
+git push
+
+echo("got to here");
+	
+exit();

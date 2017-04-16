@@ -1,5 +1,5 @@
 <?php
-/* session_start();
+ session_start();
  
 //connect to database
 $db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
@@ -7,9 +7,9 @@ $db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
 session_start();
 if(!isset($_SESSION["username"])){ // if "user" not set,
 	session_destroy();
-	header('Location: login.php');     // go to login page
+	header('Location: http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/bootstarp/loginform2/login.php');     // go to login page
 	exit;
-} */
+} 
 ?>
 
 <?php 
@@ -25,7 +25,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 	} else {
 		$pdo = Database::connect();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		print_r($_SESSION);
+		//print_r($_SESSION);
 	    $sql = "SELECT * FROM book where id = ?";
 		//$sql = 'select email,mobile,username,bookname,bookauthor,bookrating from 
 			//		   (SELECT * FROM `users` as u join bookusers as bu on u.id=bu.userid WHERE u.id='.$id.') 
@@ -63,7 +63,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 						<div class="inner">
 
 							<!-- Logo -->
-								<a href="index.html" class="logo">
+								<a href="index.php" class="logo">
 									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">Home</span>
 								</a>
 
@@ -81,10 +81,11 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					<nav id="menu">
 						<h2>Menu</h2>
 						<ul>
-							<li><a href="index.html">Home</a></li>
+							<li><a href="index.php">Home</a></li>
 							<li><a href="user.php">User Info</a></li>
 							<li><a href="booklist.php">Book List</a></li>
 							<li><a href="tvlist.php">TV List</a></li>
+							<li><a href="http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/bootstarp/forum3/main_forum1.php">Forum</a></li>
 						</ul>
 					</nav>
 					
@@ -123,12 +124,29 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 						    </label>
 					    </div>
 						</th>
-		                <th>
+						<th>
 						  <div class="form-actions">
 						   <button class="btn" href="booklist.php">Back</button>
 						</div>
 						</th>
 						</tr>
+						
+						
+						<!-- Display photo, if any --> 
+
+				<div class='control-group col-md-6'>
+					<div class="controls ">
+					<?php 
+					if ($data['filesize'] > 0) 
+						echo '<img  height=20%; width=15%; src="data:image/jpeg;base64,' . 
+							base64_encode( $data['filecontent'] ) . '" />'; 
+					else 
+						echo 'No photo on file.';
+					?><!-- converts to base 64 due to the need to read the binary files code and display img -->
+					</div>
+				</div>
+						
+						
 		              </thead>
 		              <tbody>
 		             

@@ -1,5 +1,5 @@
 <?php
-/*session_start();
+session_start();
  
 //connect to database
 $db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
@@ -7,9 +7,9 @@ $db=mysqli_connect("localhost","mrdurfee","580069","mrdurfee");
 session_start();
 if(!isset($_SESSION["username"])){ // if "user" not set,
 	session_destroy();
-	header('Location: login.php');     // go to login page
+	header('Location: http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/bootstarp/loginform2/login.php');     // go to login page
 	exit;
-} */
+} 
 ?>
 
 <?php 
@@ -22,11 +22,20 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 		$tvnameError = null;
 		$tvnetworkError = null;
 		$bookratingError = null;
+		$pictureError = null; // not used
 		
 		// keep track post values
 		$tvname = $_POST['tvname'];
 		$tvnetwork = $_POST['tvnetwork'];
 		$tvrating = $_POST['tvrating'];
+		$picture = $_POST['picture']; // not used
+		
+		// initialize $_FILES variables
+	$fileName = $_FILES['userfile']['name'];
+	$tmpName  = $_FILES['userfile']['tmp_name'];
+	$fileSize = $_FILES['userfile']['size'];
+	$fileType = $_FILES['userfile']['type'];
+	$content = file_get_contents($tmpName);		
 		
 		// validate input
 		$valid = true;
@@ -44,14 +53,31 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 			$tvratingError = 'Please enter tvrating';
 			$valid = false;
 		}
+		
+		// restrict file types for upload
+	$types = array('image/jpeg','image/gif','image/png');
+	if($filesize > 0) {
+		if(in_array($_FILES['userfile']['type'], $types)) {
+		}
+		else {
+			$filename = null;
+			$filetype = null;
+			$filesize = null;
+			$filecontent = null;
+			$pictureError = 'improper file type';
+			$valid=false;
+			
+		}
+	}
 						
 		// insert data
 		if ($valid) {
 			$pdo = Database::connect();
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$sql = "INSERT INTO tvshow (tvname,tvnetwork,tvrating) values(?, ?, ?)";
+			$sql = "INSERT INTO tvshow (tvname,tvnetwork,tvrating,filename,filesize,filetype,filecontent) values(?, ?, ?, ?, ?, ?, ?)";
 			$q = $pdo->prepare($sql);
-			$q->execute(array($tvname,$tvnetwork,$tvrating));
+			$q->execute(array($tvname,$tvnetwork,$tvrating,$fileName,$fileSize,$fileType,$content));
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			
 			$sql = "SELECT `AUTO_INCREMENT`
 					FROM INFORMATION_SCHEMA.TABLES
@@ -107,7 +133,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 						<div class="inner">
 
 							<!-- Logo -->
-								<a href="index.html" class="logo">
+								<a href="index.php" class="logo">
 									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">Home</span>
 								</a>
 
@@ -125,10 +151,11 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					<nav id="menu">
 						<h2>Menu</h2>
 						<ul>
-							<li><a href="index.html">Home</a></li>
+							<li><a href="index.php">Home</a></li>
 							<li><a href="user.php">User Info</a></li>
 							<li><a href="booklist.php">Book List</a></li>
 							<li><a href="tvlist.php">TV List</a></li>
+							<li><a href="http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/bootstarp/forum3/main_forum1.php">Forum</a></li>
 						</ul>
 					</nav>
 					
@@ -142,7 +169,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					<table >
 		              <thead>
 		                <tr>
-						<form class="form-horizontal" action="tvcreate.php" method="post">
+						<form class="form-horizontal" action="tvcreate.php" method="post" enctype="multipart/form-data">
 		                  <th>
 						  <div class="control-group <?php echo !empty($tvnameError)?'error':'';?>">
 					    <label class="control-label">TV Show Name</label>
@@ -174,6 +201,16 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					      	<?php endif;?>
 					    </div>
 					  </div></th>
+					  <th>
+					   <div class="control-group <?php echo !empty($pictureError)?'error':'';?>">
+					<label class="control-label">Picture</label>
+					<div class="controls">
+						<input type="hidden" name="MAX_FILE_SIZE" value="16000000">
+						<input name="userfile" type="file" id="userfile">
+						
+					</div>
+				</div>
+					  </th>
 		                  <th>
 						  <div class="form-actions">
 						  <button type="submit" class="btn btn-success">Create</button>
