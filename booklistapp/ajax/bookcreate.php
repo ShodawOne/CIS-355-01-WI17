@@ -18,18 +18,28 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 	require 'database.php';
 	$id=$_SESSION['id'];
 
-	if ( !empty($_POST)) {
-		// keep track validation errors
+if ( !empty($_POST)) { // if not first time through
+
+			// keep track validation errors
 		$booknameError = null;
 		$bookauthorError = null;
 		$bookratingError = null;
-		
-		// keep track post values
+	$pictureError = null; // not used
+	
+	// keep track post values
 		$bookname = $_POST['bookname'];
 		$bookauthor = $_POST['bookauthor'];
 		$bookrating = $_POST['bookrating'];
-		
-		// validate input
+	$picture = $_POST['picture']; // not used
+	
+// initialize $_FILES variables
+	$fileName = $_FILES['userfile']['name'];
+	$tmpName  = $_FILES['userfile']['tmp_name'];
+	$fileSize = $_FILES['userfile']['size'];
+	$fileType = $_FILES['userfile']['type'];
+	$content = file_get_contents($tmpName);
+
+// validate input
 		$valid = true;
 		if (empty($bookname)) {
 			$booknameError = 'Please enter bookname';
@@ -45,35 +55,38 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 			$bookratingError = 'Please enter bookrating';
 			$valid = false;
 		}
-						
-		// insert data
-		if ($valid) {
-			//print_r(["Data: ",$bookname,$bookauthor,$bookrating,$tid,$userid,$bookid]);
-			$pdo = Database::connect();
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+	// restrict file types for upload
+	$types = array('image/jpeg','image/gif','image/png');
+	if($filesize > 0) {
+		if(in_array($_FILES['userfile']['type'], $types)) {
+		}
+		else {
+			$filename = null;
+			$filetype = null;
+			$filesize = null;
+			$filecontent = null;
+			$pictureError = 'improper file type';
+			$valid=false;
 			
-			$sql = "INSERT INTO book (bookname,bookauthor,bookrating) values(?, ?, ?)";
-			
-			//$sql = 'select email,mobile,username,bookname,bookauthor,bookrating from 
-			//		   (INSERT INTO `users` as u join bookusers as bu on u.id=bu.userid WHERE u.id='.$id.') 
-				//	   as j join book on j.bookid=book.id';
-			
-			$q = $pdo->prepare($sql);
-			$q->execute(array($bookname,$bookauthor,$bookrating));
-			
-			//$sql = "SELECT MAX(bookid) FROM book";
-			//$sql = "SELECT Last_Insert_Id( id FROM book)";
-			/*$sql = "SELECT TOP 1 id FROM book ORDER BY id DESC";
-			$sql = "SELECT Last_Insert_Id()";
-			$result = mysql_query($sql);
-			if (!$result){
-				echo 'Could not run query: ' .mysql_error();
-			}
-			
-			$row = mysql_fetch_row($result);
-			$bookid = $row[0];*/
-			//print_r($row[0]);	
-			$sql = "SELECT `AUTO_INCREMENT`
+		}
+	}
+	// insert data
+	if ($valid) 
+	{
+		$pdo = Database::connect();
+		
+				
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$sql = "INSERT INTO book (bookname,bookauthor,bookrating,
+		filename,filesize,filetype,filecontent) values(?, ?, ?, ?, ?, ?, ?)";
+		$q = $pdo->prepare($sql);
+		$q->execute(array($bookname,$bookauthor,$bookrating,
+		$fileName,$fileSize,$fileType,$content));
+		
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$sql = "SELECT `AUTO_INCREMENT`
 					FROM INFORMATION_SCHEMA.TABLES
 					WHERE TABLE_SCHEMA = 'mrdurfee'
 					AND  TABLE_NAME   = 'book'";
@@ -91,37 +104,23 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 			$sql = "INSERT INTO bookusers (userid,bookid) values( ?, ?)";
 			$q = $pdo->prepare($sql);
 			$q->execute(array($id,$bookid));
-			
-			//$sql = "INSERT INTO bookusers (tid,userid,bookid) values (?, ?, ?)";
-			//$q = $pdo->prepare($sql);
-			//$q->execute(array($tid,$userid,$bookid));
-			Database::disconnect();
-			header("Location: booklist.php");
-		}
+		
+		Database::disconnect();
+		header("Location: booklist.php");
 	}
+}
 ?>
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <link   href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap.min.js"></script>
-	<style>
-		body {background-color: #4d4dff;}
-	</style>
-</head>
-
-<body>
     <div class="container">
-    
-    			<div class="span10 offset1">
-    				<div class="row">
-		    			<h3>Create a BookList</h3>
-		    		</div>
-    		
-	    			<form class="form-horizontal" action="bookcreate.php" method="post">
+
+		<div class="span10 offset1">
+			
+			<div class="row">
+				<h3>Add New book</h3>
+			</div>
+	
+			<form class="form-horizontal" action="bookcreate.html" method="post" enctype="multipart/form-data">
 					  <div class="control-group <?php echo !empty($booknameError)?'error':'';?>">
 					    <label class="control-label">BookName</label>
 					    <div class="controls">
@@ -149,13 +148,24 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					      	<?php endif;?>
 					    </div>
 					  </div>
-					  <div class="form-actions">
-						  <button type="submit" class="btn btn-success">Create</button>
-						  <a class="btn" href="booklist.php">Back</a>
-						</div>
-					</form>
+			  
+				<div class="control-group <?php echo !empty($pictureError)?'error':'';?>">
+					<label class="control-label">Picture</label>
+					<div class="controls">
+						<input type="hidden" name="MAX_FILE_SIZE" value="16000000">
+						<input name="userfile" type="file" id="userfile">
+						
+					</div>
+				</div>
+			  
+				<div class="form-actions">
+					<button type="submit" class="btn btn-success">Confirm</button>
+					<a class="btn" href="booklist.html">Back</a>
 				</div>
 				
-    </div> <!-- /container -->
-  </body>
-</html>
+			</form>
+			
+		</div> <!-- end div: class="span10 offset1" -->
+				
+    </div> <!-- end div: class="container" -->
+  

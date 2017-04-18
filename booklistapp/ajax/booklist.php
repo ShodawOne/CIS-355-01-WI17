@@ -15,18 +15,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <link   href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap.min.js"></script>
-	<style>
-		body {background-color: #9999ff;}
-	</style>
-</head>
 
-<body>
     <div class="container">
     		<div class="row">
     			<h3>BookList</h3>
@@ -34,8 +23,8 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 			<div class="row">
 			
 				<p>
-					<a href="bookcreate.php" class="btn btn-success">Create</a>
-					<a href="home.php" class="btn btn-success">Home</a>
+					<a href="bookcreate.html" class="btn btn-success">Create</a>
+					<a href="home.html" class="btn btn-success">Home</a>
 				</p>
 																
 				<table class="table table-striped table-bordered">
@@ -73,11 +62,11 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 							   	echo '<td>'. $row['bookauthor'] . '</td>';
 							   	echo '<td>'. $row['bookrating'] . '</td>';
 							   	echo '<td width=250>';
-								echo '<a class="btn" href="bookread.php?id='.$row['id'].'">Read</a>';
+								echo '<a class="btn" href="bookread.html?id='.$row['id'].'">Read</a>';
 							   	echo '&nbsp;';
-							   	echo '<a class="btn btn-success" href="bookupdate.php?id='.$row['id'].'">Update</a>';
+							   	echo '<a class="btn btn-success" href="bookupdate.html?id='.$row['id'].'">Update</a>';
 							   	echo '&nbsp;';
-							   	echo '<a class="btn btn-danger" href="bookdelete.php?id='.$row['id'].'">Delete</a>';
+							   	echo '<a class="btn btn-danger" href="bookdelete.html?id='.$row['id'].'">Delete</a>';
 							   	echo '</td>';
 							   	echo '</tr>';
 					   }
@@ -90,5 +79,4 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 	            </table>
     	</div>
     </div> <!-- /container -->
-  </body>
-</html>
+  

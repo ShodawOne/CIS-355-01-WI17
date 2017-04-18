@@ -60,7 +60,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
   <div class="dropdown">
   <button class="dropbtn">Category List</button>
   <div class="dropdown-content">
-    <a href="booklist.php" class="btn btn-success">Book List</a>
+    <a href="booklist.html" class="btn btn-success">Book List</a>
     <a href="tvlist.php" class="btn btn-success">TV Show List</a>
   </div>
   </div>

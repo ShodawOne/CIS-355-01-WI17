@@ -101,7 +101,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					<table >
 		             <thead>
 		                <tr>
-						<form class="form-horizontal" action="bookdelete.php" method="post">
+						<form class="form-horizontal" action="tvdelete.php" method="post">
 		                  <th>
 						  <input type="hidden" name="id" value="<?php echo $id;?>"/>
 					  <p class="alert alert-error">Are you sure to delete ?</p>

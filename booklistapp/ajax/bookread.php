@@ -40,18 +40,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 	}
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <link   href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap.min.js"></script>
-	<style>
-		body {background-color: #9999ff;}
-	</style>
-</head>
 
-<body>
     <div class="container">
     
     			<div class="span10 offset1">
@@ -84,8 +73,22 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 						    </label>
 					    </div>
 					  </div>
+					 <!-- Display photo, if any --> 
+
+				<div class='control-group col-md-6'>
+					<div class="controls ">
+					<?php 
+					if ($data['filesize'] > 0) 
+						echo '<img  height=5%; width=15%; src="data:image/jpeg;base64,' . 
+							base64_encode( $data['filecontent'] ) . '" />'; 
+					else 
+						echo 'No photo on file.';
+					?><!-- converts to base 64 due to the need to read the binary files code and display img -->
+					</div>
+				</div>
+				
 					    <div class="form-actions">
-						  <a class="btn" href="booklist.php">Back</a>
+						  <a class="btn" href="booklist.html">Back</a>
 					   </div>
 					
 					 
@@ -93,5 +96,4 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 				</div>
 				
     </div> <!-- /container -->
-  </body>
-</html>
+  

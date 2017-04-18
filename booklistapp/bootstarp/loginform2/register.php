@@ -21,7 +21,7 @@ if(isset($_POST['register_btn']))
             mysqli_query($db,$sql);  
             $_SESSION['message']="You are now logged in"; 
             $_SESSION['username']=$username;
-            header("location: http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/bootstarp/index.php");  //redirect home page
+            header("location:http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/bootstarp/index.php");  //redirect home page
     }
     else
     {
@@ -40,7 +40,7 @@ if(isset($_POST['register_btn']))
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Bootstrap Login Form Template</title>
+        <title> Login </title>
 
         <!-- CSS -->
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">

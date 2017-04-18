@@ -1,0 +1,82 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link   href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+    <script src="vars.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="s
+ha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+        function retrievePage() {
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    document.getElementById("body").innerHTML = xhttp.responseText;
+                }
+            };
+
+            xhttp.open("GET", "http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/ajax/" + "bookupdate.php?id=" + getID(), true);
+            xhttp.send();
+        }
+		$(document).ready( function() {
+            $("#update").click( function() {
+                var bookname=$("#bookname").val();
+                var bookauthor=$("#bookauthor").val();
+                var bookrating=$("#bookrating").val();
+                var filename=$("#filename").val();
+                var filesize=$("#filesize").val();
+                var filetype=$("#filetype").val();
+				var filecontent=$("#filecontent").val();
+
+                var dataString=
+                     "id="+id
+                    +"&bookname="+bookname
+                    +"&bookauthor="+bookauthor
+                    +"&bookrating="+bookrating
+                    +"&filename="+filename
+                    +"&filesize="+filesize
+                    +"&filetype="+filetype
+                    +"&filecontent="+filecontent
+                    +"&update=";
+                if (  $.trim(bookname).length>0 
+                    & $.trim(bookauthor).length>0
+                    & $.trim(bookrating).length>0
+                    & $.trim(filename).length>0
+                    & $.trim(filesize).length>0
+                    & $.trim(filetype).length>0 
+                    & $.trim(filecontent).length>0 
+                    $.ajax( {
+                        type: "POST",
+                        url: "http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/ajax/" + "bookupdate.php",
+                        data: dataString,
+                        crossDomain: true,
+                        cache: false,
+                        beforeSend: function(){ $("#update").val('Connecting...');},
+                        success: function(data){
+                            location.href = "booklist.html"; 
+                        }
+                    });
+                }
+                return false;
+            });
+        });
+    
+		
+		
+    </script>
+</head>
+
+<body onload="retrievePage();">
+    <div id="body"></div>        
+        <!--<div class="form-actions">
+            <input type="button" id="update" class="btn btn-success" value="Update"/>
+            
+        </div> -->
+   
+</body>
+</html>

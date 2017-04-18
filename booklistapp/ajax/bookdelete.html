@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link   href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap.min.js"></script>
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+    <script src="vars.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="s
+ha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+   
+    <script type="text/javascript">
+        $(document).ready( function() {
+            $("#delete").click( function() {
+                $.ajax( {
+                    type: "POST",
+                    url: "http://csis.svsu.edu/~mrdurfee/cis355/booklistapp/ajax/" + "bookdelete.php",
+                    data: "id="+getID()+"&delete=",
+                    crossDomain: true,
+                    cache: false,
+                    beforeSend: function(){ $("#delete").val('Connecting...');},
+                    success: function(data){ location.href = "booklist.html"; }
+                });
+                return false;
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+    
+    			<div class="span10 offset1">
+    				<div class="row">
+		    			<h3>Delete a BookList</h3>
+		    		</div>
+		    		
+	    			<form class="form-horizontal" action="bookdelete.html" method="post">
+	    			  <input type="hidden" name="id" value="<?php echo $id;?>"/>
+					  <p class="alert alert-error">Are you sure to delete ?</p>
+					  <div class="form-actions">
+						  <button type="submit" class="btn btn-danger">Yes</button>
+						  <a class="btn" href="booklist.html">No</a>
+						</div>
+					</form>
+				</div>
+				
+    </div> <!-- /container -->
+</body>
