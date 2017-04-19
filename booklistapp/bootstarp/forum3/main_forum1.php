@@ -108,7 +108,6 @@ $result=mysql_query($sql);
 while($rows = mysql_fetch_array($result)){
 ?>
 <tr>
-<td bgcolor="#FFFFFF"><?php echo $rows['id']; ?></td>
 <td bgcolor="#FFFFFF"><a href="view_topic1.php?id=<?php echo $rows['id']; ?>"><?php echo $rows['topic']; ?></a><BR></td>
 <td align="center" bgcolor="#FFFFFF"><?php echo $rows['view']; ?></td>
 <td align="center" bgcolor="#FFFFFF"><?php echo $rows['reply']; ?></td>
