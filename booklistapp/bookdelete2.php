@@ -16,29 +16,52 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 
 <?php 
 	require 'database.php';
-	$id = 0;
+	$id = $_GET['id'];
 	
-	if ( !empty($_GET['id'])) {
-		$id = $_REQUEST['id'];
-	}
+	if ( !empty($_POST)) { // if user clicks "yes" (sure to delete), delete record
+
+	$id = $_POST['id'];
 	
-	if ( !empty($_POST)) {
-		// keep track post values
-		$id = $_POST['id'];
-		
-		// delete data
-		//echo "id";
-		$pdo = Database::connect();
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$sql = "DELETE FROM book  WHERE id = ?";
-		
-		//$sql = 'select bookname,bookauthor,bookrating from 
-			//		   (DELETE * FROM `users` as u join bookusers as bu on u.id=bu.userid WHERE u.id='.$id.') 
-			//		   as j join book on j.bookid=book.id';		
-		$q = $pdo->prepare($sql);
-		$q->execute(array($id));
-		Database::disconnect();
-		header("Location: booklist.php");
+	// delete data
+	$pdo = Database::connect();
+	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$sql = "DELETE FROM bookusers  WHERE id = ?";
+	$q = $pdo->prepare($sql);
+	$q->execute(array($id));
+	Database::disconnect();
+	header("Location:booklist2.php");
+} 
+else { // otherwise, pre-populate fields to show data to be deleted
+
+	$pdo = Database::connect();
+	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	
+	# get assignment details
+	$sql = "SELECT * FROM bookusers where id = ?";
+	$q = $pdo->prepare($sql);
+	$q->execute(array($id));
+	$data = $q->fetch(PDO::FETCH_ASSOC);
+	
+	# get volunteer details
+	$sql = "SELECT * FROM users where id = ?";
+	$q = $pdo->prepare($sql);
+	$q->execute(array($data['userid']));
+	$perdata = $q->fetch(PDO::FETCH_ASSOC);
+	
+	# get event details
+	$sql = "SELECT * FROM book where id = ?";
+	$q = $pdo->prepare($sql);
+	$q->execute(array($data['bookid']));
+	$eventdata = $q->fetch(PDO::FETCH_ASSOC);
+	
+	# get event details
+	$sql = "SELECT * FROM bookusers where id = ?";
+	$q = $pdo->prepare($sql);
+	$q->execute(array($data['rating']));
+	$eventdata = $q->fetch(PDO::FETCH_ASSOC);
+	
+	Database::disconnect();
+}
 		
 	} 
 ?>
@@ -59,10 +82,10 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
     
     			<div class="span10 offset1">
     				<div class="row">
-		    			<h3>Delete a BookList</h3>
+		    			<h3>Delete a BookList rating</h3>
 		    		</div>
 		    		
-	    			<form class="form-horizontal" action="bookdelete.php" method="post">
+	    			<form class="form-horizontal" action="bookdelete2.php" method="post">
 	    			  <input type="hidden" name="id" value="<?php echo $id;?>"/>
 					  <p class="alert alert-error">Are you sure to delete ?</p>
 					  <div class="form-actions">

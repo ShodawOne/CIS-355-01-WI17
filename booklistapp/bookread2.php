@@ -113,6 +113,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 					<a href="bookcreate2.php?id=<?php echo $id; ?>" class="btn btn-success">rating</a>
 					<!--<a href="bookcreate2.php" class="btn btn-success">Create</a> -->
 					<a href="bookupdate2.php?id=<?php echo $id; ?>" class="btn btn-success">update</a>
+					<a href="bookdelete.php?id=<?php echo $id; ?>" class="btn btn-success">delete</a>
 					<a class="btn" href="booklist2.php">Back</a>
 				</div>
 				 <?php 
