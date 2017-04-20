@@ -110,13 +110,13 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 			
 				<div class="form-actions">
 					<!--<a class="btn btn-primary" href="bookcreate2.php?book_id=<?//php echo $id; ?>">rating for this shift</a>-->
-					<a href="bookcreate2.php"<?php?id=',$id,'?> class="btn btn-success">test</a>
-					<a href="bookcreate2.php" class="btn btn-success">Create</a>
-					<a href="bookupdate2.php" class="btn btn-success">update</a>
+					<a href="bookcreate2.php?id=<?php echo $id; ?>" class="btn btn-success">rating</a>
+					<!--<a href="bookcreate2.php" class="btn btn-success">Create</a> -->
+					<a href="bookupdate2.php?id=<?php echo $id; ?>" class="btn btn-success">update</a>
 					<a class="btn" href="booklist2.php">Back</a>
 				</div>
 				 <?php 
-					  
+					  /*
 					  
 					   $pdo = Database::connect();
 					   print_r($_SESSION);
@@ -135,7 +135,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 	 				   foreach ($pdo->query($sql) as $row) {
 						   		echo '<tr>';
 							   	echo '<td>'. $row['bookname'] . '</td>';
-							   	echo '<td>'. $row['bookauthor'] . '</td>';
+							    echo '<td>'. $row['bookauthor'] . '</td>';
 							   	//echo '<td>'. $row['bookrating'] . '</td>';
 							   	echo '<td width=250>';
 								echo '<a class="btn" href="bookread2.php?id='.$row['id'].'">Read</a>';
@@ -147,6 +147,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 							   	echo '</tr>';
 					   }
 					   Database::disconnect();
+					   */
 					  ?>
 			
 				

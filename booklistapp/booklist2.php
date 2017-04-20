@@ -76,7 +76,7 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 							   	echo '<td width=250>';
 								echo '<a class="btn" href="bookread2.php?id='.$row['id'].'">Read</a>';
 							   	echo '&nbsp;';
-							   	echo '<a class="btn btn-success" href="bookupdate2.php?id='.$row['id'].'">Update</a>';
+							  // 	echo '<a class="btn btn-success" href="bookupdate2.php?id='.$row['id'].'">Update</a>';
 							   	//echo '&nbsp;';
 							   //	echo '<a class="btn btn-danger" href="bookdelete.php?id='.$row['id'].'">Delete</a>';
 							   	echo '</td>';

@@ -7,9 +7,9 @@ if(!isset($_SESSION["username"])){ // if "user" not set,
 }
 print_r($_SESSION);
 print_r($_GET);
-
+print_r($_POST);
 $users = $_SESSION["username"];
-$books = $_GET['bookname'];
+$books = $_GET['id'];
 
 
 
@@ -31,11 +31,11 @@ if ( !empty($_POST)) {
 	
 	// validate user input
 	$valid = true;
-	if (empty(user)) {
+	if (empty($userid)) {
 		$userError = 'Please choose a user';
 		$valid = false;
 	}
-	if (empty($book)) {
+	if (empty($bookid)) {
 		$bookError = 'Please choose an book';
 		$valid = false;
 	} 
@@ -47,7 +47,7 @@ if ( !empty($_POST)) {
 		
 	if ($valid) {
 				
-		
+		//echo $userid . " " . $bookid . " " . $rating; exit();
 		$pdo = Database::connect();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$sql = "INSERT INTO bookusers 
@@ -55,7 +55,7 @@ if ( !empty($_POST)) {
 			values(?, ?, ?)";
 		$q = $pdo->prepare($sql);
 		
-		$q->execute(array($users,$books,$rating));
+		$q->execute(array($userid,$bookid,$rating));
 		Database::disconnect();
 		header("Location: booklist2.php");
 	}
@@ -87,7 +87,7 @@ if ( !empty($_POST)) {
 						<?php
 							$pdo = Database::connect();
 							$sql = 'SELECT * FROM `users` WHERE username = "'. $_SESSION['username'] . '"';
-							echo "<select class='form-control' name='user' id='username'>";
+							echo "<select class='form-control' name='userid' id='username'>";
 							if($user) // if $_GET exists restrict person options to logged in user
 								foreach ($pdo->query($sql) as $row) {
 									if($user==$row['id'])
@@ -111,7 +111,7 @@ if ( !empty($_POST)) {
 						<?php
 							$pdo = Database::connect();
 							$sql = 'SELECT * FROM `book` WHERE id = "'. $_GET['id'] . '"';
-							echo "<select class='form-control' name='book' id='bookname'>";
+							echo "<select class='form-control' name='bookid' id='id'>";
 							
 							if($books) // if $_GET exists restrict person options to logged in user
 								foreach ($pdo->query($sql) as $row) {
